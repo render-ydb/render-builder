@@ -1,0 +1,52 @@
+{
+  "name": "@x.render/render-builder",
+  "version": "1.0.1",
+  "description": "A basic builder that integrates building tools such as webpack, Vite.",
+  "main": "lib/index.js",
+  "bin": {
+    "render-builder": "lib/commands/index.js"
+  },
+  "scripts": {
+    "start": "tsc  --watch",
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "prepare": "npx render-lint init  --force",
+    "eslint-fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
+    "render-lint-fix": "npm run eslint-fix"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=8.6.0",
+    "npm": ">=3.0.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@x.render/render-lint": "^1.1.2",
+    "@x.render/render-node-utils": "^1.1.1",
+    "chalk": "^4.1.2",
+    "chokidar": "^3.5.3",
+    "commander": "^10.0.0",
+    "deepmerge": "^4.3.1",
+    "detect-port": "^1.5.1",
+    "fast-glob": "^3.2.12",
+    "find-up": "^5.0.0",
+    "fs-extra": "^11.1.1",
+    "inquirer": "8.2.5",
+    "lodash": "^4.17.21",
+    "tapable": "^2.2.1",
+    "webpack": "^5.76.3",
+    "webpack-chain": "^6.5.1",
+    "webpack-dev-server": "^4.13.1",
+    "yargs-parser": "^21.1.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx}": "eslint"
+  }
+}

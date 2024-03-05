@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "module":"commonjs",
+        "moduleResolution": "node",
+        "target": "es5",
+        "experimentalDecorators": true,
+        "skipLibCheck": true,
+        "lib": ["dom", "es5", "es6", "es7", "scripthost", "es2018.promise"],
+        "emitDecoratorMetadata": true,
+        "preserveConstEnums": true,
+        "esModuleInterop":true,
+        "allowSyntheticDefaultImports": true,
+        "rootDir": "src",
+        "outDir": "lib",
+        "types": [
+            "node",
+        ],
+        "declaration": true,
+        "resolveJsonModule": true
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "lib",
+    ],
+}
