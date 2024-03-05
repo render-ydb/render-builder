@@ -9,7 +9,7 @@ import bootstrap = require('./bootstrap');
 import test = require('./test');
 
 const pkgInfo: Record<string, any> = fse.readJsonSync(
-  path.resolve(__dirname, '../../package.json'),
+  path.resolve(__dirname, '../../package.json')
 );
 
 const registerCommand = () => {
@@ -19,15 +19,20 @@ const registerCommand = () => {
     .command('build')
     .description('build project')
     .allowUnknownOption()
-    .option('--config <config>', 'use custom config')
+    .option(
+      '--config <config>',
+      'specify the configuration file path used by render-builder'
+    )
     .action(build);
 
   program
     .command('start')
     .description('start server')
     .allowUnknownOption()
-    .option('--config <config>', 'use custom config')
-    .option('--inspect', 'enable the Node.js inspector')
+    .option(
+      '--config <config>',
+      'specify the configuration file path used by render-builder'
+    )
     .option('-h, --host <host>', 'dev server host', '0.0.0.0')
     .option('-p, --port <port>', 'dev server port')
     .action(bootstrap);

@@ -6,5 +6,7 @@ module.exports = getESLintConfig("common-ts", {
     "new-cap": "off",
     "import/no-cycle": "off",
     "@typescript-eslint/no-useless-constructor": "off",
+    "comma-dangle": "off",
+    "no-await-in-loop": "off",
   },
 });

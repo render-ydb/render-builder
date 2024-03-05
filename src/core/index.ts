@@ -24,10 +24,8 @@ import checkPluginsOrPresets = require('../utils/checkPluginsOrPresets');
 import resolvePlugins = require('../utils/resolvePlugins');
 import resolvePresets = require('../utils/resolvePresets');
 import checkFileExistence = require('../utils/checkFileExistence');
-import { log, loadConfig, runTask } from '@x.render/render-node-utils';
+import { log, loadConfig } from '@x.render/render-node-utils';
 import chalk = require('chalk');
-
-const { beginTextStyle, endTextStyle } = runTask;
 
 class Builder {
   appConfig: AppConfig = {};
@@ -80,66 +78,14 @@ class Builder {
 
   async setUp() {
     try {
-      await runTask([
-        {
-          beginText: beginTextStyle(
-            'loading the package.json information of the application.',
-          ),
-          fn: this.getRootPkg.bind(this),
-          endText: endTextStyle(
-            'successful retrieval of the package.json information of the application.',
-          ),
-        },
-        {
-          beginText: beginTextStyle(
-            'loading the app.json information of the application.',
-          ),
-          fn: this.getAppConfig.bind(this),
-          endText: endTextStyle(
-            'successful retrieval of the app.json information of the application.',
-          ),
-        },
-        {
-          beginText: beginTextStyle(
-            'loading the mock.json information of the application.',
-          ),
-          fn: this.getMockConfig.bind(this),
-          endText: endTextStyle(
-            'successful retrieval of the mock.json information of the application.',
-          ),
-        },
-        {
-          beginText: beginTextStyle('legistering builder lifecycle functions.'),
-          fn: this.registerHooks.bind(this),
-          endText: endTextStyle(
-            'registration of builder lifecycle functions completed.',
-          ),
-        },
-        {
-          beginText: beginTextStyle('parsing plugins.'),
-          fn: this.resolvePlugins.bind(this),
-          endText: endTextStyle('successful parsing of plugins.'),
-        },
-        {
-          beginText: beginTextStyle('parsing presets.'),
-          fn: this.resolvePresets.bind(this),
-          endText: endTextStyle('successful parsing of presets.'),
-        },
-        {
-          beginText: beginTextStyle(
-            'validating the legality of plugins and presets.',
-          ),
-          fn: this.validatePluginAndPreset.bind(this),
-          endText: endTextStyle(
-            'validation of the legality of plugins and presets completed.',
-          ),
-        },
-        {
-          beginText: beginTextStyle('creating a compiler instance.'),
-          fn: this.createCompiler.bind(this),
-          endText: endTextStyle('compiler instance created successfully.'),
-        },
-      ]);
+      await this.getRootPkg();
+      await this.getAppConfig();
+      await this.getMockConfig();
+      await this.registerHooks();
+      await this.resolvePlugins();
+      await this.resolvePresets();
+      await this.validatePluginAndPreset();
+      await this.createCompiler();
     } catch (error) {
       this.log.error(error.stack);
       process.exit(1);
@@ -148,7 +94,7 @@ class Builder {
 
   async getRootPkg() {
     this.pkg = await loadConfig<Json>(
-      path.resolve(this.rootDir, 'package.json'),
+      path.resolve(this.rootDir, 'package.json')
     );
   }
 
@@ -173,11 +119,11 @@ class Builder {
     this.hooks = {
       afterConfigLoaded: new SyncHook(
         ['afterConfigLoaded'],
-        'afterConfigLoaded',
+        'afterConfigLoaded'
       ),
       afterServerStarted: new SyncHook(
         ['afterServerStarted'],
-        'afterServerStarted',
+        'afterServerStarted'
       ),
       afterBuild: new SyncHook(['afterBuild'], 'afterBuild'),
       afterTest: new SyncHook(['afterTest'], 'afterTest'),
@@ -205,8 +151,8 @@ class Builder {
           chalk.red(
             `${builder} cannot use plugins that do not comply with the ${builder} configuration for building.\n` +
               `[${type}:path]: ${tagPath}\n` +
-              `[${type}:name]: ${name}`,
-          ),
+              `[${type}:name]: ${name}`
+          )
         );
       }
     } else if (!tag) {
@@ -214,8 +160,8 @@ class Builder {
         chalk.red(
           'plugins must inherit from WebpackBuilderPluginClass, ViteBuilderPluginClass, or RollupBuilderPluginClass.\n' +
             `[${type}:path]: ${tagPath}\n` +
-            `[${type}:name]: ${name}`,
-        ),
+            `[${type}:name]: ${name}`
+        )
       );
     }
   }
@@ -229,7 +175,7 @@ class Builder {
         plugin.tag,
         pluginPath,
         name,
-        'plugin',
+        'plugin'
       );
     }
 
@@ -241,7 +187,7 @@ class Builder {
           plugin.tag,
           presetPath,
           name,
-          'preset',
+          'preset'
         );
       }
     }
