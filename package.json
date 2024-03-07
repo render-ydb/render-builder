@@ -1,6 +1,6 @@
 {
   "name": "@x.render/render-builder",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A basic builder that integrates building tools such as webpack, Vite.",
   "main": "lib/index.js",
   "bin": {
@@ -48,5 +48,9 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": "eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/render-x/render-builder"
   }
 }
