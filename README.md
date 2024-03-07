@@ -41,11 +41,7 @@ npx render-builder start --config=./build.config.js  --host=0.0.0.0 --port=3333
 
 ### build
 
-Use build command to run compilation and support cli args OK
-
-### start
-
-Use the start command to run the project and support cli args passing in
+Use build command to run compilation and support cli args.
 
 #### args
 
@@ -110,15 +106,15 @@ The `compiler`, `config`, and `options` parameters can be obtained in the run me
 
 Compiler is an object when render-builder is executed. It provides many properties and methods to help write plug-ins.
 
-| **Name**     | **Type**   | **Description**                                                                                          |
-| ------------ | ---------- | -------------------------------------------------------------------------------------------------------- |
-| context      | `Object`   | Compilation context                                                                                      |
-| hooks        | `Object`   | Provide render-builder life cycle monitoring function                                                    |
-| log          | `Function` | Output function                                                                                          |
-| buildPlugins | `Array`    | Save plug-in information used in render-builder compilationn                                             |
-| buildPresets | `Array`    | Save Preset information used in render-builder compilationn                                              |
-| setValue     | `Function` | Used for communication between plug-ins. Use this method to save content to render-builder.              |
-| setValue     | `Function` | UUsed for communication between plug-ins. Use this method to obtain the content saved in render-builder. |
+| **Name**     | **Type**   | **Description**                                                                                         |
+| ------------ | ---------- | ------------------------------------------------------------------------------------------------------- |
+| context      | `Object`   | Compilation context                                                                                     |
+| hooks        | `Object`   | Provide render-builder life cycle monitoring function                                                   |
+| log          | `Function` | Output function                                                                                         |
+| buildPlugins | `Array`    | Save plug-in information used in render-builder compilationn                                            |
+| buildPresets | `Array`    | Save Preset information used in render-builder compilationn                                             |
+| setValue     | `Function` | Used for communication between plug-ins. Use this method to save content to render-builder.             |
+| setValue     | `Function` | Used for communication between plug-ins. Use this method to obtain the content saved in render-builder. |
 
 ```javascript
 export default class DemoWebpackPlugin extends WebpackBuilderPluginClass {
@@ -246,12 +242,69 @@ config is a webpack-chain object
 
 options are the configuration options required by the plug-in
 
-[View more plugin writing examples](./examples/webpack)
+[View more plugin writing examples](https://github.com/render-x/render-webpack-config/tree/master/packages)
 
 ## Write a preset
 
+Preset is actually a collection of plugins,For example, the following is a preset for compiling react components:
+
+```javascript
+import EmitEsmCjsWebpackPlugin from "@x.render/emit-esm-cjs-webpack-plugin";
+import StaticAssetsWebpackPlugin from "@x.render/static-assets-webpack-plugin";
+import StyleWebpackPlugin from "@x.render/style-webpack-plugin";
+import OptimizationWebpackPlugin from "@x.render/optimization-webpack-plugin";
+import ReactBabelWebpackPlugin from "@x.render/react-babel-webpack-plugin";
+import ReactComponentWebpackPlugin from "@x.render/react-component-webpack-plugin";
+
+const buildReactComponentWebpackPreset = {
+  install() {
+    return [
+      EmitEsmCjsWebpackPlugin,
+      StaticAssetsWebpackPlugin,
+      StyleWebpackPlugin,
+      OptimizationWebpackPlugin,
+      ReactBabelWebpackPlugin,
+      ReactComponentWebpackPlugin,
+    ];
+  },
+};
+export * from "./types";
+export default buildReactComponentWebpackPreset;
+```
+
+The parameters passed to preset will be passed transparently to all plug-ins. In other words, the configuration of preset is the collection of all plug-in configurations.
+
 ## Configuration file
 
+The render-builder configuration file must be configured. The render-builder will decide which plug-ins, presets, and build tools to use to run your project based on this file.
+
+render-builder supports configuration files in multiple formats：
+
+- build.json
+- build.config.(js|ts|mjs|mts|cjs|cts)
+
+Here are some examples of writing configuration files:
+
+```json
+{
+  "builder": "webpack",
+  "plugins": [
+    [ "@x.render/plugin-react-component",options]
+    "@x.render/plugin-react-babel",
+    "@x.render/plugin-optimization",
+    "@x.render/plugin-style",
+    "@x.render/plugin-static-assets",
+    "@x.render/plugin-emit-esm-cjs"
+  ],
+  "presets": [
+    "build-react-component-webpack-preset",
+   [ "@x.render/build-react-component-webpack-preset",options]
+  ]
+}
 ```
 
-```
+Among them, builder selection can only be webpack, vite, rollup, which is used to tell render-builder what building tools to use to run the project.The builder selections can only be webpack, vite, and rollup, which are used to tell the render-builder what building tools to use to run the project.
+
+- When your builder is set to `webpack`, your plug-in must implement `WebpackBuilderPluginClass`.
+- When your builder is set to `vite`, your plug-in must implement `ViteBuilderPluginClass`.
+- When your builder is set to `rollup`, your plug-in must implement `RollupBuilderPluginClass`.
