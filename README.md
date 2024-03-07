@@ -7,7 +7,7 @@
 
 </p>
 
-[中文文档](./README.zh.md)
+[中文文档](https://github.com/render-x/render-builder/blob/main/README.zh.md)
 
 ## Introduce
 
