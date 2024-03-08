@@ -90,6 +90,8 @@ All render-builder plugins must implement one of the three classes `WebpackBuild
 
 Plug-ins written using WebpackBuilderPluginClass will have a getConfig static method,Plug-ins written using WebpackBuilderPluginClass will have a getConfig static method, which can be used to obtain the webpack-chain configuration inside the plug-in.
 
+**The run method in the plug-in must return config, which is convenient for other plug-ins to use or provided to rende-builder for compilation.**
+
 For example, the following code can obtain the webpack-chain configuration in DemoWebpackPlugin:
 
 ```javascript

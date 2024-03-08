@@ -1,6 +1,6 @@
 {
   "name": "@x.render/render-builder",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A basic builder that integrates building tools such as webpack, Vite.",
   "main": "lib/index.js",
   "bin": {

@@ -87,7 +87,10 @@ export default class DemoWebpackPlugin extends WebpackBuilderPluginClass {
 ```
 
 所有渲染构建器插件都必须实现“WebpackBuilderPluginClass”、“ViteBuilderPluginClass”和“RollupBuilderPluginClass”三个类之一。目前只有 WebpackBuilderPluginClass 实现。
+
 使用 WebpackBuilderPluginClass 编写的插件都会有一个 getConfig 静态方法，使用 WebpackBuilderPluginClass 编写的插件会有一个 getConfig 静态方法，可以用来获取插件内部的 webpack-chain 配置。
+
+**插件中的 run 方法，必须要返回 config，已以便于其他插件使用或者提供给 rende-builder 进行编译**
 
 例如，以下代码可以获取 DemoWebpackPlugin 中的 webpack-chain 配置：
 
