@@ -10,7 +10,7 @@ const findUp = require('find-up');
 
 const resolvePlugins = async (
   allPlugins: PluginListOrPresetList,
-  rootDir: string,
+  rootDir: string
 ): Promise<PluginInfo[]> => {
   const buildPlugins = await Promise.all(
     allPlugins.map(async (plugin): Promise<PluginInfo> => {
@@ -23,13 +23,13 @@ const resolvePlugins = async (
         Plugin = Plugin.default ?? Plugin;
       } catch (err) {
         if (err instanceof Error) {
-          throw new Error(`Fail to load plugin ${pluginPath}`);
+          throw new Error(`Fail to load plugin ${pluginPath}\n${err.message}`);
         }
       }
       const pluginPkg = await loadConfig<{ name: string; [x: string]: any }>(
         findUp.sync('package.json', {
           cwd: pluginPath,
-        }),
+        })
       );
 
       return {
@@ -38,7 +38,7 @@ const resolvePlugins = async (
         plugin: Plugin,
         options: options || {},
       };
-    }),
+    })
   );
   return buildPlugins;
 };
