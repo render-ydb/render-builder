@@ -35,6 +35,8 @@ Use the start command to run the project and support cli args passing in
 | host     | Specify the host where the project runs                    | 0.0.0.0                                                                                                                                     |
 | port     | Specify the port where the project runs                    | 3333                                                                                                                                        |
 
+build.json is used by default. If you want to use a configuration file of type `build.config(js \| ts \| mjs \| mts \| cjs \| cts)`, please use config to specify the configuration file path.
+
 ```bash
 npx render-builder start --config=./build.config.js  --host=0.0.0.0 --port=3333
 ```

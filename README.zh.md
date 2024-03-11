@@ -35,6 +35,8 @@ render-builder 提供了两个命令 start 和 build，用于启动和编译项�
 | host    | 指定项目运行的主机                     | 0.0.0.0                                                                                |
 | port    | 指定项目运行的端口                     | 3333                                                                                   |
 
+默认使用 build.json，如果要使用`build.config(js \| ts \| mjs \| mts \| cjs \| cts)`类型的配置文件，请使用 config 指定配置文件路径。
+
 ```bash
 npx render-builder start --config=./build.config.js  --host=0.0.0.0 --port=3333
 ```
