@@ -13,7 +13,7 @@ const scriptBuild: ScriptFn = async (compiler) => {
   const configInfoSet = await getConfig<WebpackChain>(
     compiler,
     buildPlugins,
-    buildPresets,
+    buildPresets
   );
   const webpackConfig = configInfoSet.map((v) => v.config.toConfig());
 
@@ -23,6 +23,11 @@ const scriptBuild: ScriptFn = async (compiler) => {
     await hooks.failed.call({ err: new Error(errorMsg) });
     return;
   }
+
+  hooks.afterConfigLoaded.call({
+    commandArgs: { ...commandArgs },
+    config: configInfoSet,
+  });
 
   const defaultPath = path.resolve(rootDir, 'build');
   configInfoSet.forEach((v) => {
@@ -35,11 +40,6 @@ const scriptBuild: ScriptFn = async (compiler) => {
         fs.emptyDirSync(defaultPath);
       }
     }
-  });
-
-  hooks.afterConfigLoaded.call({
-    commandArgs: { ...commandArgs },
-    config: configInfoSet,
   });
 
   let webpackCompiler: webpack.MultiCompiler;
