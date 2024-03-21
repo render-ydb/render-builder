@@ -6,22 +6,9 @@ import fg = require('fast-glob');
 import { log } from '@x.render/render-node-utils';
 import { BUILDER_CONFIG_FILE_TYPE, CWD_PATH } from '../const';
 
-let child: ChildProcess = null;
-const rawArgv = parse(process.argv.slice(2));
 const scriptPath = require.resolve('./start.js');
 
-const [defaultBuildConfig] = fg.sync(BUILDER_CONFIG_FILE_TYPE, {
-  cwd: CWD_PATH,
-  absolute: true,
-});
-
-const configPath = [
-  path.resolve(rawArgv.config || defaultBuildConfig),
-  path.resolve(CWD_PATH, 'package.json'),
-  path.resolve(CWD_PATH, 'src/schema.json'),
-  path.resolve(CWD_PATH, 'src/app.json'),
-  path.resolve(CWD_PATH, 'src/mock.json'),
-];
+let child: ChildProcess = null;
 
 const restartProcess = () => {
   (async () => {
@@ -52,6 +39,20 @@ const onUserChange = (filepath: string) => {
 
 export = async () => {
   restartProcess();
+  const rawArgv = parse(process.argv.slice(2));
+
+  const [defaultBuildConfig] = fg.sync(BUILDER_CONFIG_FILE_TYPE, {
+    cwd: CWD_PATH,
+    absolute: true,
+  });
+
+  const configPath = [
+    path.resolve(rawArgv.config || defaultBuildConfig),
+    path.resolve(CWD_PATH, 'package.json'),
+    path.resolve(CWD_PATH, 'src/schema.json'),
+    path.resolve(CWD_PATH, 'src/app.json'),
+    path.resolve(CWD_PATH, 'src/mock.json'),
+  ];
   const watcher = chokidar.watch(configPath, {
     ignoreInitial: true,
   });

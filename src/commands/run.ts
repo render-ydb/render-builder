@@ -6,24 +6,25 @@ import { BuilderOptions, ScriptFn } from '../types';
 import resolveBuildConfig = require('../utils/resolveBuildConfig');
 
 type BuildTool = Record<'start' | 'build' | 'test', ScriptFn>;
-const scriptMap: Partial<{
-  webpack: BuildTool;
-  vite: BuildTool;
-  rollup: BuildTool;
-}> = {
-  webpack: {
-    start: webpackStart,
-    build: webpackBuild,
-    test: webpackTest,
-  },
-};
 
 const run = async (options: BuilderOptions) => {
+  const scriptMap: Partial<{
+    webpack: BuildTool;
+    vite: BuildTool;
+    rollup: BuildTool;
+  }> = {
+    webpack: {
+      start: webpackStart,
+      build: webpackBuild,
+      test: webpackTest,
+    },
+  };
+
   const { command, rootDir, configFilePattern, commandArgs } = options;
   const buildConfig = await resolveBuildConfig(
     rootDir,
     configFilePattern,
-    commandArgs.config,
+    commandArgs.config
   );
   const { builder } = buildConfig;
   const renderBuilder = await createBuilder({
